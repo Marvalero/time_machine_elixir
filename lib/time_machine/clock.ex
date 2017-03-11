@@ -8,7 +8,8 @@ defmodule TimeMachine.Clock do
   def init(_) do
     children = [
       worker(TimeMachine.Clock.Cache, []),
-      worker(TimeMachine.Clock.Server, [])
+      worker(TimeMachine.Clock.Server, []),
+      worker(TimeMachine.Clock.Repo, [])
     ]
 
     opts = [strategy: :one_for_one, name: TimeMachine.Clock.Supervisor]

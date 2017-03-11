@@ -22,3 +22,24 @@ If [available in Hex](https://hex.pm/docs/publish), the package can be installed
     end
     ```
 
+# Ecto
+
+Run migrations:
+```
+mix do ecto.create, ecto.migrate
+```
+
+Create a new migration:
+```
+mix ecto.gen.migration new_migration
+```
+
+Run docker and check database
+```
+$ docker-compose up
+$ docker exec -it timemachine_postgres_1 psql
+> CREATE USER time_machine WITH CREATEDB PASSWORD 'time_machine';
+> \l #List databases
+> \connect time_machine
+> \dt # List tables
+```

@@ -16,7 +16,7 @@ defmodule TimeMachine.Mixfile do
   def application do
     [
       applications:
-       [:logger, :cowboy, :plug],
+       [:logger, :cowboy, :plug, :postgrex, :ecto],
       mod: {TimeMachine, []}
     ]
   end
@@ -32,6 +32,8 @@ defmodule TimeMachine.Mixfile do
   # Type "mix help deps" for more examples and options
   defp deps do
     [{:plug, "~> 1.0"},
-     {:cowboy, "~> 1.0"}]
+     {:cowboy, "~> 1.0"},
+     {:postgrex, ">= 0.0.0"},
+     {:ecto, "~> 2.1"}]
   end
 end
