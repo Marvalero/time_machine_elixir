@@ -9,7 +9,8 @@ defmodule TimeMachine.Clock do
     children = [
       worker(TimeMachine.Clock.Cache, []),
       worker(TimeMachine.Clock.Server, []),
-      worker(TimeMachine.Clock.Repo, [])
+      worker(TimeMachine.Clock.Repo, []),
+      worker(TimeMachine.Clock.Collection, [])
     ]
 
     opts = [strategy: :one_for_one, name: TimeMachine.Clock.Supervisor]

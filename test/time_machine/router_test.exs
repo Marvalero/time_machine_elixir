@@ -16,11 +16,19 @@ defmodule TimeMachine.RouterTest do
   end
 
   test "returns uploaded" do
-    conn = conn(:post, "/time?name=MyClock&time=1234&count=2")
+    conn = conn(:post, "/time?name=MyClock&time=1234&counter=2")
            |> Router.call(@opts)
 
     assert conn.state == :sent
     assert conn.status == 201
+  end
+
+  test "returns 422 if parameters are wrong" do
+    conn = conn(:post, "/time?perico=MyClock&lolo=1234")
+           |> Router.call(@opts)
+
+    assert conn.state == :sent
+    assert conn.status == 422
   end
 
   test "returns 404" do
