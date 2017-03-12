@@ -2,8 +2,8 @@ defmodule TimeMachine.Clock.Cache do
   use GenServer
   import Ecto.Query, only: [from: 2]
 
-  def start_link do
-    GenServer.start_link(__MODULE__, nil, name: __MODULE__)
+  def start_link([collection: collection]) do
+    GenServer.start_link(__MODULE__, [collection: collection], name: __MODULE__)
   end
 
   def add_clock(name, time, counter) do
@@ -16,27 +16,27 @@ defmodule TimeMachine.Clock.Cache do
 
   ## GenServer
   #
-  def handle_cast({:add_clock, name, time, counter}, _) do
-    TimeMachine.Clock.Collection.update(name, time, counter)
-    { :noreply, nil }
+  def handle_cast({:add_clock, name, time, counter}, [collection: collection]) do
+    collection.update(name, time, counter)
+    { :noreply, [collection: collection] }
   end
 
-  def handle_call({:show_clock, name}, _from, _) do
+  def handle_call({:show_clock, name}, _from, [collection: collection]) do
     time = name
-          |> TimeMachine.Clock.Collection.find_by_name
-          |> return_time
-    { :reply, time, nil }
+          |> collection.find_by_name
+          |> handle_clock(collection)
+    { :reply, time, [collection: collection] }
   end
 
-  def return_time(nil) do
+  def handle_clock(nil, _collection) do
     DateTime.to_string(DateTime.utc_now)
   end
 
-  def return_time(clock) do
+  def handle_clock(clock, collection) do
     if clock.counter > 1 do
-      TimeMachine.Clock.Collection.update(clock.name, clock.time, (clock.counter-1))
+      collection.update(clock.name, clock.time, (clock.counter-1))
     else
-      TimeMachine.Clock.Collection.delete_by_name(clock.name)
+      collection.delete_by_name(clock.name)
     end
     clock.time
   end

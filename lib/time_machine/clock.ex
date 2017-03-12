@@ -7,10 +7,10 @@ defmodule TimeMachine.Clock do
 
   def init(_) do
     children = [
-      worker(TimeMachine.Clock.Cache, []),
+      worker(TimeMachine.Clock.Cache, cache_dependencies()),
       worker(TimeMachine.Clock.Server, server_dependencies()),
       worker(TimeMachine.Clock.Repo, []),
-      worker(TimeMachine.Clock.Collection, [])
+      worker(TimeMachine.Clock.Collection, collection_dependencies())
     ]
 
     opts = [strategy: :one_for_one, name: TimeMachine.Clock.Supervisor]
@@ -19,5 +19,13 @@ defmodule TimeMachine.Clock do
 
   defp server_dependencies do
     [[cache: TimeMachine.Clock.Cache]]
+  end
+
+  defp cache_dependencies do
+    [[collection: TimeMachine.Clock.Collection]]
+  end
+
+  defp collection_dependencies do
+    [[schema: TimeMachine.Clock.Schema, repo: TimeMachine.Clock.Repo]]
   end
 end
