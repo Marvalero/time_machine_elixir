@@ -3,9 +3,9 @@ defmodule TimeMachine.Clock.Repo.Migrations.AddClocks do
 
   def change do
     create table(:clocks) do
-      add :time,          :decimal
-      add :counter,       :decimal
-      add :name,          :decimal
+      add :time,          :string
+      add :counter,       :integer
+      add :name,          :string
 
       timestamps
     end

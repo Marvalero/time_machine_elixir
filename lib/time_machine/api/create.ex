@@ -1,3 +1,4 @@
+require IEx
 defmodule TimeMachine.Api.Create do
   import Plug.Conn
 
@@ -6,9 +7,9 @@ defmodule TimeMachine.Api.Create do
   end
 
   def call(conn, opts) do
-    %{ "time" => time, "count" => count, "name" => name } = conn.params
-    { count, _ } = Integer.parse(count)
-    TimeMachine.Clock.Server.add_clock(name, time, count)
+    %{ "time" => time, "counter" => counter, "name" => name } = conn.params
+    { counter, _ } = Integer.parse(counter)
+    TimeMachine.Clock.Server.add_clock(name, time, counter)
     send_resp(conn, 201, "Created")
   end
 end
