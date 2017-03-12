@@ -1,8 +1,8 @@
 defmodule TimeMachine.Clock.Server do
   use GenServer
 
-  def start_link do
-    GenServer.start(__MODULE__, nil, name: __MODULE__)
+  def start_link([cache: cache]) do
+    GenServer.start_link(__MODULE__, [cache: cache], name: __MODULE__)
   end
 
   def add_clock(name, time, count) do
@@ -19,17 +19,17 @@ defmodule TimeMachine.Clock.Server do
 
   #####      
   # GenServer implementation
-  def handle_cast({:add_clock, name, time, count}, _) do
-    TimeMachine.Clock.Cache.add_clock(name, time, count)
-    { :noreply, nil }
+  def handle_cast({:add_clock, name, time, count}, [cache: cache]) do
+    cache.add_clock(name, time, count)
+    { :noreply, [cache: cache] }
   end
 
-  def handle_call(:show, _from, _) do
-    { :reply, DateTime.to_string(DateTime.utc_now), nil }
+  def handle_call(:show, _from, [cache: cache]) do
+    { :reply, DateTime.to_string(DateTime.utc_now), [cache: cache] }
   end
 
-  def handle_call({:show, name}, _from, _) do
-    time = TimeMachine.Clock.Cache.show_clock(name)
-    { :reply, time, nil }
+  def handle_call({:show, name}, _from, [cache: cache]) do
+    time = cache.show_clock(name)
+    { :reply, time, [cache: cache] }
   end
 end

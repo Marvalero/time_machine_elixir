@@ -3,7 +3,7 @@ defmodule TimeMachine.Clock.Cache do
   import Ecto.Query, only: [from: 2]
 
   def start_link do
-    GenServer.start(__MODULE__, nil, name: __MODULE__)
+    GenServer.start_link(__MODULE__, nil, name: __MODULE__)
   end
 
   def add_clock(name, time, counter) do

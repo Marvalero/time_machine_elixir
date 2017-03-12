@@ -24,6 +24,6 @@ defmodule TimeMachine.Router do
   end
 
   def start_link do
-    Plug.Adapters.Cowboy.http(Plugger.Router, [])
+    Plug.Adapters.Cowboy.http(Plugger.Router, [], name: __MODULE__)
   end
 end
