@@ -3,11 +3,11 @@ defmodule TimeMachine.Clock.Collection do
   import Ecto.Query, only: [from: 2]
 
   def start_link do
-    GenServer.start(TimeMachine.Clock.Collection, nil, name: TimeMachine.Clock.Collection)
+    GenServer.start(__MODULE__, nil, name: __MODULE__)
   end
 
   def insert(name, time, counter) do
-    GenServer.cast(TimeMachine.Clock.Collection, {:insert, name, time, counter})
+    GenServer.cast(__MODULE__, {:insert, name, time, counter})
   end
 
   def update(name, time, counter) do
@@ -16,11 +16,11 @@ defmodule TimeMachine.Clock.Collection do
   end
 
   def delete_by_name(name) do
-    GenServer.cast(TimeMachine.Clock.Collection, {:delete_by_name, name})
+    GenServer.cast(__MODULE__, {:delete_by_name, name})
   end
 
   def find_by_name(name) do
-    GenServer.call(TimeMachine.Clock.Collection, {:find_by_name, name})
+    GenServer.call(__MODULE__, {:find_by_name, name})
   end
 
   ## GenServer

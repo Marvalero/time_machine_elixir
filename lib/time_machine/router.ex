@@ -1,6 +1,7 @@
 defmodule TimeMachine.Router do
   use Plug.Router
 
+  plug Plug.Logger
   plug Plug.Parsers, parsers: [:json],
                      pass:  ["text/*"],
                      json_decoder: Poison

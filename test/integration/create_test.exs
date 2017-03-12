@@ -1,4 +1,4 @@
-defmodule TimeMachine.RouterTest do
+defmodule TimeMachine.Api.CreateTest do
   use ExUnit.Case
   use Plug.Test
   doctest TimeMachine.Router
@@ -7,16 +7,8 @@ defmodule TimeMachine.RouterTest do
 
   @opts Router.init([])
 
-  test "returns time" do
-    conn = conn(:get, "/time", "")
-           |> Router.call(@opts)
-
-    assert conn.state == :sent
-    assert conn.status == 200
-  end
-
-  test "returns uploaded" do
-    conn = conn(:post, "/time?name=MyClock&time=1234&counter=2")
+  test "returns 201 Create" do
+    conn = conn(:post, "/time?name=MyClock&time=1234&counter=1")
            |> Router.call(@opts)
 
     assert conn.state == :sent
@@ -32,7 +24,7 @@ defmodule TimeMachine.RouterTest do
   end
 
   test "returns 404" do
-    conn = conn(:get, "/missing", "")
+    conn = conn(:post, "/missing", "")
            |> Router.call(@opts)
 
     assert conn.state == :sent

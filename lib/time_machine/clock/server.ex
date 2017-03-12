@@ -2,19 +2,19 @@ defmodule TimeMachine.Clock.Server do
   use GenServer
 
   def start_link do
-    GenServer.start(TimeMachine.Clock.Server, nil, name: TimeMachine.Clock.Server)
+    GenServer.start(__MODULE__, nil, name: __MODULE__)
   end
 
   def add_clock(name, time, count) do
-    GenServer.cast(TimeMachine.Clock.Server, {:add_clock, name, time, count})
+    GenServer.cast(__MODULE__, {:add_clock, name, time, count})
   end
 
   def show do
-    GenServer.call(TimeMachine.Clock.Server, :show)
+    GenServer.call(__MODULE__, :show)
   end
 
   def show(name) do
-    GenServer.call(TimeMachine.Clock.Server, {:show, name})
+    GenServer.call(__MODULE__, {:show, name})
   end
 
   #####      

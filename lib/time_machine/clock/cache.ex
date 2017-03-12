@@ -3,15 +3,15 @@ defmodule TimeMachine.Clock.Cache do
   import Ecto.Query, only: [from: 2]
 
   def start_link do
-    GenServer.start(TimeMachine.Clock.Cache, nil, name: TimeMachine.Clock.Cache)
+    GenServer.start(__MODULE__, nil, name: __MODULE__)
   end
 
   def add_clock(name, time, counter) do
-    GenServer.cast(TimeMachine.Clock.Cache, {:add_clock, name, time, counter})
+    GenServer.cast(__MODULE__, {:add_clock, name, time, counter})
   end
 
   def show_clock(name) do
-    GenServer.call(TimeMachine.Clock.Cache, {:show_clock, name})
+    GenServer.call(__MODULE__, {:show_clock, name})
   end
 
   ## GenServer
@@ -24,7 +24,7 @@ defmodule TimeMachine.Clock.Cache do
   def handle_call({:show_clock, name}, _from, _) do
     time = name
           |> TimeMachine.Clock.Collection.find_by_name
-          |> TimeMachine.Clock.Cache.return_time
+          |> return_time
     { :reply, time, nil }
   end
 
