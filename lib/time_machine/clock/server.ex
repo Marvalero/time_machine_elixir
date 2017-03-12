@@ -25,11 +25,15 @@ defmodule TimeMachine.Clock.Server do
   end
 
   def handle_call(:show, _from, [cache: cache]) do
-    { :reply, DateTime.to_string(DateTime.utc_now), [cache: cache] }
+    { :reply, current_time(), [cache: cache] }
   end
 
   def handle_call({:show, name}, _from, [cache: cache]) do
-    time = cache.show_clock(name)
+    time = cache.show_clock(name) || current_time()
     { :reply, time, [cache: cache] }
+  end
+
+  defp current_time do
+    DateTime.to_string(DateTime.utc_now)
   end
 end

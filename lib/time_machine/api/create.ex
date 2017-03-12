@@ -1,4 +1,3 @@
-require IEx
 defmodule TimeMachine.Api.Create do
   import Plug.Conn
 

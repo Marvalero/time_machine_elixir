@@ -29,7 +29,7 @@ defmodule TimeMachine.Clock.Cache do
   end
 
   def handle_clock(nil, _collection) do
-    DateTime.to_string(DateTime.utc_now)
+    nil
   end
 
   def handle_clock(clock, collection) do
